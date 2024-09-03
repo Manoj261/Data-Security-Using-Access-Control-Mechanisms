@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Prediction</title>
+</head>
+<body>
+    <h1>Crop Prediction</h1>
+    <form action="{% url 'predict' %}" method="post">
+        {% csrf_token %}
+        <label for="N">Nitrogen (N):</label>
+        <input type="number" id="N" name="N" required><br><br>
+
+        <label for="P">Phosphorus (P):</label>
+        <input type="number" id="P" name="P" required><br><br>
+
+        <label for="K">Potassium (K):</label>
+        <input type="number" id="K" name="K" required><br><br>
+
+        <label for="temperature">Temperature (°C):</label>
+        <input type="number" step="0.1" id="temperature" name="temperature" required><br><br>
+
+        <label for="humidity">Humidity (%):</label>
+        <input type="number" step="0.1" id="humidity" name="humidity" required><br><br>
+
+        <label for="ph">pH:</label>
+        <input type="number" step="0.1" id="ph" name="ph" required><br><br>
+
+        <label for="rainfall">Rainfall (mm):</label>
+        <input type="number" step="0.1" id="rainfall" name="rainfall" required><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+</body>
+</html>

@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ENTER OTP</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+            * {
+              box-sizing: border-box;
+              margin: 0;
+              font-family: "Playfair Display", serif;
+            }
+            .logotext {
+              background: #cfe7fa;
+              background: linear-gradient(to right, #cfe7fa 0%, #6393c1 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              font-family: "Playfair Display", serif;
+            }
+            .auth-screen {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              height: 100vh;
+            }
+            
+            .auth-bg-img img {
+              height: 100vh;
+              width: 100%;
+              object-fit: cover;
+            }
+            
+            .auth-bg-img {
+              position: fixed;
+              height: 100%;
+              width: 100%;
+              z-index: -2;
+            }
+            
+            .login {
+              background: #ffffff;
+              border-radius: 16px;
+              padding: 32px;
+              max-width: 600px;
+              max-height: 390px;
+              width: 90%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: space-between;
+            }
+            .toast {
+              position: fixed;
+              top: 10px;
+              right: 10px;
+          }
+            
+            .title-auth p {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              color: #667085;
+              margin-top: 4px;
+            }
+            
+            .title-auth {
+              text-align: center;
+            }
+            
+            .title-auth h5 {
+              font-style: normal;
+              font-weight: 700;
+              font-size: 32px;
+              line-height: 40px;
+              color: #101828;
+            }
+            
+            .form-group {
+              width: 100%;
+              margin-top: 40px;
+            }
+            
+            .login .form-group input.form-text {
+              width: 100%;
+              padding: 0.375rem 0.75rem;
+              font-size: 1rem;
+              line-height: 1.5;
+              color: #495057;
+              background-color: #fff;
+              border: 1px solid #ced4da;
+              border-radius: 0.25rem;
+              transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+              display: block;
+              margin-bottom: 16px;
+              height: 48px;
+            }
+
+            .spinner {
+              border: 16px solid #f3f3f3;
+              border-radius: 50%;
+              border-top: 16px solid #3498db;
+              width: 60px;
+              height: 60px;
+              animation: spin 2s linear infinite;
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            
+            /* Additional styling for the loading modal */
+            #loading .modal-content {
+              background-color: #fefefe;
+              margin: 15% auto;
+              padding: 20px;
+              border: 1px solid #888;
+              width: 30%;
+              text-align: center;
+              border-radius: 10px;
+              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+            
+            .login input.btn {
+              max-width: 400px;
+              width: 100%;
+              margin-top: 16px;
+              display: inline-block;
+              font-weight: 400;
+              line-height: 1.5;
+              color: #ffffff;
+              text-align: center;
+              text-decoration: none;
+              vertical-align: middle;
+              cursor: pointer;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              user-select: none;
+              background-color: #019d9a;
+              border: 1px solid #019d9a;
+              font-size: 1rem;
+              padding: 10px 18px;
+              border-radius: 40px;
+              transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+            
+            .logo-col {
+              max-width: 356px;
+              margin-bottom: 16px;
+              overflow: hidden;
+              width: 200px;
+            }
+            
+            .logo-col img.auth-logo {
+              width: 100%;
+              height: 99px;
+            }
+            
+            .otp-form .otp-field {
+              display: inline-block;
+              width: 3.6rem;
+              height: 3.6rem;
+              font-size: 2rem;
+              line-height: 4rem;
+              text-align: center;
+              border: 1px solid #d9d9d9;
+              outline: none;
+              border-radius: 10px;
+              margin: 0 6px;
+            }
+            
+            form.otp-form {
+              margin: 24px 0;
+            }
+            
+            .otp-form .otp-field:focus {
+              border-color: #101010;
+            }
+            
+            .auth-footer {
+              width: 100%;
+              text-align: center;
+              border-top: 1px solid #ededed;
+            }
+            
+            .auth-footer p {
+              padding-top: 16px;
+              color: #019d9a;
+            }
+            
+            .auth-footer .resend-btn {
+              cursor: pointer;
+              color: #329d9a;
+            }
+            
+            form.otp-form {
+              margin: 24px 0 10px;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-wrap: wrap;
+            }
+            
+            @media (max-width: 540px) {
+              form.otp-form {
+                transform: scale(0.5);
+                flex-wrap: unset;
+                width: 100%;
+              }
+            }
+            </style>
+    </head>
+    
+    <body>
+   
+      <section class="auth-screen">
+        <div id="loading" class="modal">
+          <div class="modal-content">
+            <h2>Sending your email...</h2>
+            <div class="spinner"></div>
+          </div>
+        </div>
+          <div class="auth-bg-img">
+              {% load static %}
+              <img src="{% static '/images/SAA.jpeg' %}" alt="Loading.."/>
+          </div>
+          <div class="logo-col"></div>
+          <div class="login">
+              <div class="title-auth">
+                  <h5>OTP Authentication</h5>
+                  <p>Enter the 4 digit OTP sent to your email.</p>
+              </div>
+              <form action="{% url 'lvf' %}" method="post" id="otpForm" class="otp-form">
+                  {% csrf_token %}
+                  <input class="otp-field" type="text" id="otp1" name="otp1" maxlength="1" oninput="mvtn(this, 'otp2')" onkeydown="mvbc(event, this, null)">
+                  <input class="otp-field" type="text" id="otp2" name="otp2" maxlength="1" oninput="mvtn(this, 'otp3')" onkeydown="mvbc(event, this, 'otp1')">
+                  <input class="otp-field" type="text" id="otp3" name="otp3" maxlength="1" oninput="mvtn(this, 'otp4')" onkeydown="mvbc(event, this, 'otp2')">
+                  <input class="otp-field" type="text" id="otp4" name="otp4" maxlength="1" oninput="mvtn(this, '')" onkeydown="mvbc(event, this, 'otp3')">
+                  <input type="submit" name="opt" class="btn">
+              </form>
+              <script>        
+                function mvtn(cr, nect) {
+                    if (cr.value.length === 1) {
+                        if (nect !== '') {
+                            document.getElementById(nect).focus();
+                        }
+                    }
+                }
+        
+                function mvbc(event, curr, prev) {
+                    if (event.key === "Backspace" && curr.value === "") {
+                        if (prev !== '') {
+                            document.getElementById(prev).focus();
+                        }
+                    }
+                }
+            </script>
+              <div class="auth-footer">
+                  <p>Didn’t receive an OTP? <button class="resend-btn" id="resend-btn" onclick="resendOtp()" disabled>Resend</button></p>
+              </div>
+          </div>
+      </section>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js">
+          window.onload = function() {
+              document.getElementById("otp1").focus();
+          }
+  
+          function mvtn(cr, nect) {
+            // Move to the next field if current field has a character
+            if (cr.value.length === 1) {
+                if (nect !== null) {
+                    document.getElementById(nect).focus();
+                }
+            }
+          }
+          document.getElementById("otpForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+        
+            // Show the loading animation
+            var loadingModal = document.getElementById("loading");
+            loadingModal.style.display = "block";
+        
+            // Prepare form data for sending
+            var formData = new FormData(this);
+        
+            // Send the data via fetch API
+            fetch("{% url 'signin' %}", {
+              method: "POST",
+              body: formData,
+              headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+              }
+            }).then(response => {
+              // Hide the loading animation
+              loadingModal.style.display = "none";
+        
+              if (response.ok) {
+                // Show success modal or redirect to the relevant page
+                displayModal();
+                // or redirect
+                // window.location.href = "/relevant-page/";
+              } else {
+                // Handle errors
+                response.json().then(data => {
+                  alert("Error: " + data.error); // Show error message
+                });
+              }
+            }).catch(error => {
+              loadingModal.style.display = "none";
+              alert("An error occurred: " + error.message);
+            });
+          });
+  
+          function mvbc(event, curr, prev) {
+            // Move to the previous field if the backspace key is pressed and current field is empty
+            if (event.key === "Backspace" && curr.value === "") {
+                if (prev !== null) {
+                    document.getElementById(prev).focus();
+                }
+            }
+          }
+  
+          function enableResendButton() {
+              document.getElementById('resend-btn').disabled = false;
+          }
+      </script>
+  </body>
+</html>

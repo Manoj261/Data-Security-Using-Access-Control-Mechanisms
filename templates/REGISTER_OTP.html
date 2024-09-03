@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ENTER OTP</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+            * {
+              box-sizing: border-box;
+              margin: 0;
+              font-family: "Playfair Display", serif;
+            }
+            .logotext {
+              background: #cfe7fa;
+              background: linear-gradient(to right, #cfe7fa 0%, #6393c1 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              font-family: "Playfair Display", serif;
+            }
+            .auth-screen {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              height: 100vh;
+            }
+            
+            .auth-bg-img img {
+              height: 100vh;
+              width: 100%;
+              object-fit: cover;
+            }
+            
+            .auth-bg-img {
+              position: fixed;
+              height: 100%;
+              width: 100%;
+              z-index: -2;
+            }
+            
+            .login {
+              background: #ffffff;
+              border-radius: 16px;
+              padding: 32px;
+              max-width: 600px;
+              max-height: 390px;
+              width: 90%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: space-between;
+            }
+            
+            .title-auth p {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              color: #667085;
+              margin-top: 4px;
+            }
+            
+            .title-auth {
+              text-align: center;
+            }
+            
+            .title-auth h5 {
+              font-style: normal;
+              font-weight: 700;
+              font-size: 32px;
+              line-height: 40px;
+              color: #101828;
+            }
+            
+            .form-group {
+              width: 100%;
+              margin-top: 40px;
+            }
+            
+            .login .form-group input.form-text {
+              width: 100%;
+              padding: 0.375rem 0.75rem;
+              font-size: 1rem;
+              line-height: 1.5;
+              color: #495057;
+              background-color: #fff;
+              border: 1px solid #ced4da;
+              border-radius: 0.25rem;
+              transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+              display: block;
+              margin-bottom: 16px;
+              height: 48px;
+            }
+            
+            .login input.btn {
+              max-width: 400px;
+              width: 100%;
+              margin-top: 16px;
+              display: inline-block;
+              font-weight: 400;
+              line-height: 1.5;
+              color: #ffffff;
+              text-align: center;
+              text-decoration: none;
+              vertical-align: middle;
+              cursor: pointer;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              user-select: none;
+              background-color: #019d9a;
+              border: 1px solid #019d9a;
+              font-size: 1rem;
+              padding: 10px 18px;
+              border-radius: 40px;
+              transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+            
+            .logo-col {
+              max-width: 356px;
+              margin-bottom: 16px;
+              overflow: hidden;
+              width: 200px;
+            }
+            
+            .logo-col img.auth-logo {
+              width: 100%;
+              height: 99px;
+            }
+            
+            /* Otp css */
+            .otp-form .otp-field {
+              display: inline-block;
+              width: 3.6rem;
+              height: 3.6rem;
+              font-size: 2rem;
+              line-height: 4rem;
+              text-align: center;
+              border: 1px solid #d9d9d9;
+              outline: none;
+              border-radius: 10px;
+              margin: 0 6px;
+            }
+            
+            form.otp-form {
+              margin: 24px 0;
+            }
+            
+            .otp-form .otp-field:focus {
+              border-color: #101010;
+            }
+            
+            .auth-footer {
+              width: 100%;
+              text-align: center;
+              border-top: 1px solid #ededed;
+            }
+            
+            .auth-footer p {
+              padding-top: 16px;
+              color: #019d9a;
+            }
+            
+            .auth-footer .resend-btn {
+              cursor: pointer;
+              color: #329d9a;
+            }
+           
+            
+            form.otp-form {
+              margin: 24px 0 10px;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-wrap: wrap;
+            }
+            
+            @media (max-width: 540px) {
+              form.otp-form {
+                transform: scale(0.5);
+                flex-wrap: unset;
+                width: 100%;
+              }
+            }
+            .toast {
+              position: fixed;
+              top: 1rem;
+              right: 1rem;
+              min-width: 200px;
+              z-index: 1050;
+          }
+          .toast-body {
+              display: flex;
+              align-items: center;
+              color: black;
+          }
+          .toastify {
+            color: black !important;
+        }
+        .toastify-icon {
+            margin-right: 10px;
+        }
+          .toast-body .icon {
+              margin-right: 10px;
+          }
+            </style>
+
+    </head>
+
+    {% block content %}
+    
+    <body>
+        <section class="auth-screen">
+            <div class="auth-bg-img">
+              <div class="kitty"></div>
+              {% load static %}
+              <img src="{% static '/images/SAA.jpeg' %}" alt="Loading">
+            </div>
+            <div class="logo-col">
+              <!--     <img src="https://picsum.photos/200/300" alt="bg-img" class="auth-logo" /> -->
+            </div>
+            <!-- Otp screen -->
+            <div class="login">
+              <div class="title-auth">
+          
+                <h5>OTP Authentication</h5>
+                <p>Enter the 6 digit OTP sent to your email.</p>
+              </div>
+              <form action="{% url 'verify_otp' %}" method="post" class="otp-form">
+                {% csrf_token %}
+                <input class="otp-field" type="text" name="gg1" maxlength=1 id="gg1" oninput="mvtn(this, 'gg2')" onkeydown="mvbc(event, this, null)">
+                <input class="otp-field" type="text" name="gg2" maxlength=1 id="gg2" oninput="mvtn(this, 'gg3')" onkeydown="mvbc(event, this, 'gg1')">
+                <input class="otp-field" type="text" name="gg3" maxlength=1 id="gg3" oninput="mvtn(this, 'gg4')" onkeydown="mvbc(event, this, 'gg2')">
+                <input class="otp-field" type="text" name="gg4" maxlength=1 id="gg4" oninput="mvtn(this, 'gg5')" onkeydown="mvbc(event, this, 'gg3')">
+                <input class="otp-field" type="text" name="gg5" maxlength=1 id="gg5" oninput="mvtn(this, 'gg6')" onkeydown="mvbc(event, this, 'gg4')">
+                <input class="otp-field" type="text" name="gg6" maxlength=1 id="gg6" oninput="mvtn(this, null)" onkeydown="mvbc(event, this, 'gg5')" >
+                <input type="submit" name="op" class="btn">
+              </form>
+              <script>        
+                function mvtn(cr, nect) {
+                    if (cr.value.length === 1) {
+                        if (nect !== '') {
+                            document.getElementById(nect).focus();
+                        }
+                    }
+                }
+        
+                function mvbc(event, curr, prev) {
+                    if (event.key === "Backspace" && curr.value === "") {
+                        if (prev !== '') {
+                            document.getElementById(prev).focus();
+                        }
+                    }
+                }
+            </script>
+          
+              
+              <div class="auth-footer">
+          
+                <p>Didn't receive an OTP.<a class="resend-btn">Resend</a></p>
+              </div>
+            </div>
+          
+          </section>
+          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js">
+
+            document.addEventListener("DOMContentLoaded", function(){
+              {% for message in messages %}
+                  Toastify({
+                      text: "{{ message }}",
+                      duration: 5000,
+                      close: true,
+                      gravity: "top",
+                      position: "right",
+                      backgroundColor: "#ffffff",
+                      className: "toastify",
+                      avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='green' class='bi bi-check-circle-fill' viewBox='0 0 16 16'%3E%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.97 10.97a.75.75 0 0 0 1.07 0L13.97 4l-1.07-1.07L6.5 8.44 5.03 6.97 4 8l2 2z'/%3E%3C/svg%3E"
+                  }).showToast();
+              {% endfor %}
+          });
+
+
+            window.onload=()=>{
+              let otp1 = document.getElementById('gg1');
+              otp1.focus();
+            }     
+
+            function mvtn(cr, nect) {
+              // Move to the next field if current field has a character
+              if (cr.value.length === 1) {
+                  if (nect !== null) {
+                      document.getElementById(nect).focus();
+                  }
+              }
+          }
+          {% comment %} setTimeout(function() {
+            window.location.href = "/otp/";
+        }, 2000); {% endcomment %}
+       
+          $(document).ready(function(){
+            $('.toast').toast('show');
+        });
+        function mvbc(event, curr, prev) {
+          // Move to the previous field if the backspace key is pressed and current field is empty
+          if (event.key === "Backspace" && curr.value === "") {
+              if (prev !== null) {
+                  document.getElementById(prev).focus();
+              }
+          }
+      }
+          </script>
+    </body>
+    {% endblock content %}
+</html> 

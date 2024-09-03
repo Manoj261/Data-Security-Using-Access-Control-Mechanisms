@@ -1,0 +1,13 @@
+__pycache__/
+
+*.pkl
+
+*.csv
+
+*.sqlite3
+
+*.sql
+
+*.py[cod]
+
+*.json

@@ -1,0 +1,242 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9">
+  <title>Smart Agriculture System</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static '/css/SASstyles.css' %}">
+  <style>
+    .input-container {
+      width: 120%;
+      margin-bottom: 10px;
+    }
+
+    input {
+      background-color: #eee;
+      border: none;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      width: 300px; 
+    }
+
+    .error {
+      color: red;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      text-align: center;
+    }
+
+    /* Close button style */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sign in/up Form</h2>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form id="signUpForm" action="{% url 'signup' %}" method="POST" onsubmit="return validateSignUpForm()">
+        {% csrf_token %}
+        <h1>Create Account</h1>
+        <div class="social-container">
+          <a title="G" href="https://google.com" class="social">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a title="F" href="https://google.com" class="social">
+            <i class="fab fa-google-plus-g"></i>
+          </a>
+          <a title="L" href="https://google.com" class="social">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+        <span>or use your email for registration</span>
+        <div>
+          <input type="text" id="name" name="username" placeholder="Name" required />
+          <span id="nameError" class="error"></span>
+        </div>
+        <div>
+          <input type="email" id="email" name="email" placeholder="Email" required />
+          <span id="emailError" class="error"></span>
+        </div>
+        <div>
+          <input type="password" id="password" name="password"  placeholder="Password" required />
+          <span id="passwordError" class="error"></span>
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form id="signInForm" action="{% url 'signin' %}" method="post">
+        {% csrf_token %}
+        <h1>Sign in</h1>
+        <div class="social-container">
+          <a href="#" class="social">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social">
+            <i class="fab fa-google-plus-g"></i>
+          </a>
+          <a href="#" class="social">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+        <span>or use your account</span>
+        <input type="text" name="signin_username" placeholder="Username" />
+        <input type="password" name="signin_password" placeholder="Password" />
+        <a href="#">Forgot your password?</a>
+        <button>Sign In</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button class="ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="myModal" class="modal">
+   
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Sign up successful!</h2>
+      <p>Welcome to our platform.</p>
+    </div>
+  </div>
+  <script>
+ 
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+    signUpButton.addEventListener('click', () => {
+      container.classList.add("right-panel-active");
+    });
+    signInButton.addEventListener('click', () => {
+      container.classList.remove("right-panel-active");
+    });
+
+    
+    function validateSignUpForm() {
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      var nameError = document.getElementById("nameError");
+      var emailError = document.getElementById("emailError");
+      var passwordError = document.getElementById("passwordError");
+
+      
+      nameError.textContent = '';
+      emailError.textContent = '';
+      passwordError.textContent = '';
+
+ 
+      if (name.trim() === '') {
+        nameError.textContent = 'Please enter your name.';
+        return false;
+      }
+
+      
+      var emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(email)) {
+        emailError.textContent = 'Please enter a valid email address.';
+        return false;
+      }
+
+      
+      if (password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters long.';
+        return false;
+      }
+
+    
+      return true;
+    }
+
+
+  
+    document.getElementById("email").addEventListener("input", function() {
+      var email = this.value;
+      var emailError = document.getElementById("emailError");
+      var emailRegex = /\S+@\S+\.\S+/;
+
+      if (!emailRegex.test(email)) {
+        emailError.textContent = 'Please enter a valid email address.';
+      } else {
+        emailError.textContent = '';
+      }
+    });
+
+    document.getElementById("password").addEventListener("input", function() {
+      var password = this.value;
+      var passwordError = document.getElementById("passwordError");
+
+      if (password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters long.';
+      } else {
+        passwordError.textContent = '';
+      }
+      
+    });
+    function displayModal() {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "block";
+    }
+
+   
+    var span = document.getElementsByClassName("close")[0];
+
+   
+    span.onclick = function() {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "none";
+    }
+
+  
+    window.onclick = function(event) {
+      var modal = document.getElementById("myModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
